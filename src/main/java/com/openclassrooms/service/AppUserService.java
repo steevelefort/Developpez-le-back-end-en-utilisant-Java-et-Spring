@@ -14,7 +14,7 @@ public class AppUserService {
   @Autowired
   private AppUserRepository appUserRepository;
 
-  public Optional<AppUser> getUser(final Long id) {
+  public Optional<AppUser> getUser(final Integer id) {
     return appUserRepository.findById(id);
   }
 
@@ -22,7 +22,7 @@ public class AppUserService {
     return appUserRepository.findAll();
   }
 
-  public void deleteUser(final Long id) {
+  public void deleteUser(final Integer id) {
     appUserRepository.deleteById(id);
   }
 

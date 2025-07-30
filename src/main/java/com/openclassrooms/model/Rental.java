@@ -22,7 +22,7 @@ public class Rental {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   private String name;
 
@@ -35,7 +35,7 @@ public class Rental {
   private String description;
 
   @Column(name = "owner_id", nullable = false)
-  private Long ownerId;
+  private Integer ownerId;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
@@ -50,11 +50,11 @@ public class Rental {
   @JoinColumn(name = "owner_id", nullable = false, insertable = false, updatable = false)
   private AppUser owner;
 
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -98,11 +98,11 @@ public class Rental {
     this.description = description;
   }
 
-  public Long getOwnerId() {
+  public Integer getOwnerId() {
     return ownerId;
   }
 
-  public void setOwnerId(Long ownerId) {
+  public void setOwnerId(Integer ownerId) {
     this.ownerId = ownerId;
   }
 

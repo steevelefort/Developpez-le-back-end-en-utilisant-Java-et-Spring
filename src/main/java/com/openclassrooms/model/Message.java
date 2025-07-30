@@ -16,18 +16,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "MESSAGES")
+@Table(name = "`MESSAGES`")
 public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Column(name = "rental_id")
-  private Long rentalId;
+  private Integer rentalId;
 
   @Column(name = "user_id")
-  private Long userId;
+  private Integer userId;
 
   private String message;
 
@@ -47,27 +47,27 @@ public class Message {
   @JoinColumn(name = "rental_id", nullable = false, insertable = false, updatable = false)
   private Rental rental;
 
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
-  public Long getRentalId() {
+  public Integer getRentalId() {
     return rentalId;
   }
 
-  public void setRentalId(Long rentalId) {
+  public void setRentalId(Integer rentalId) {
     this.rentalId = rentalId;
   }
 
-  public Long getUserId() {
+  public Integer getUserId() {
     return userId;
   }
 
-  public void setUserId(Long userId) {
+  public void setUserId(Integer userId) {
     this.userId = userId;
   }
 

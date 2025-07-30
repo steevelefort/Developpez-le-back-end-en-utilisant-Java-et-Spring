@@ -14,7 +14,7 @@ public class MessageService {
   @Autowired
   private MessageRepository messageRepository;
 
-  public Optional<Message> getMessage(final Long id) {
+  public Optional<Message> getMessage(final Integer id) {
     return messageRepository.findById(id);
   }
 
@@ -22,7 +22,7 @@ public class MessageService {
     return messageRepository.findAll();
   }
 
-  public void deleteMessage(final Long id) {
+  public void deleteMessage(final Integer id) {
     messageRepository.deleteById(id);
   }
 

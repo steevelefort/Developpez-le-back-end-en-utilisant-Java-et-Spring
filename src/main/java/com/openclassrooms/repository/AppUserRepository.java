@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.openclassrooms.model.AppUser;
 
 @Repository
-public interface AppUserRepository extends CrudRepository<AppUser, Long>{
+public interface AppUserRepository extends CrudRepository<AppUser, Integer>{
 
 }

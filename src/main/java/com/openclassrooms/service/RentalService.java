@@ -14,7 +14,7 @@ public class RentalService {
   @Autowired
   private RentalRepository rentalRepository;
 
-  public Optional<Rental> getRental(final Long id) {
+  public Optional<Rental> getRental(final Integer id) {
     return rentalRepository.findById(id);
   }
 
@@ -22,7 +22,7 @@ public class RentalService {
     return rentalRepository.findAll();
   }
 
-  public void deleteRental(final Long id) {
+  public void deleteRental(final Integer id) {
     rentalRepository.deleteById(id);
   }
 
