@@ -5,29 +5,29 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.model.Rental;
-import com.openclassrooms.repository.RentalRepository;
+import com.openclassrooms.model.Message;
+import com.openclassrooms.repository.MessageRepository;
 
 @Service
-public class RentalService {
+public class MessageService {
 
   @Autowired
-  private RentalRepository rentalRepository;
+  private MessageRepository messageRepository;
 
-  public Optional<Rental> getRental(final Long id) {
-    return rentalRepository.findById(id);
+  public Optional<Message> getMessage(final Long id) {
+    return messageRepository.findById(id);
   }
 
-  public Iterable<Rental> getRentals() {
-    return rentalRepository.findAll();
+  public Iterable<Message> getMessages() {
+    return messageRepository.findAll();
   }
 
-  public void deleteRental(final Long id) {
-    rentalRepository.deleteById(id);
+  public void deleteMessage(final Long id) {
+    messageRepository.deleteById(id);
   }
 
-  public Rental saveRental(final Rental rental) {
-    return rentalRepository.save(rental);
+  public Message saveMessage(final Message message) {
+    return messageRepository.save(message);
   }
 
 
