@@ -8,4 +8,6 @@ import com.openclassrooms.model.AppUser;
 @Repository
 public interface AppUserRepository extends CrudRepository<AppUser, Integer>{
 
+  boolean existsByEmail(String email);
+
 }
