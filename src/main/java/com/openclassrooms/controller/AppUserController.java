@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
 import com.openclassrooms.dto.response.AuthResponse;
 import com.openclassrooms.dto.response.ErrorResponse;
@@ -28,18 +29,20 @@ public class AppUserController {
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
     try {
       String jwtToken = appUserService.register(request);
-      System.out.println("token " + jwtToken);
       return ResponseEntity.ok(new AuthResponse(jwtToken));
     } catch (Exception e) {
-      System.out.println("Error response");
-      System.out.println(e.getMessage());
       return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
   }
 
-  @PostMapping(value = "/login", produces = "application/json")
-  public String login() {
-    return "{\"token\":\"xxxxxx\"}";
+  @PostMapping(value = "/email", produces = "application/json")
+  public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+    try {
+      String jwtToken = appUserService.login(request);
+      return ResponseEntity.ok(new AuthResponse(jwtToken));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
   }
 
   @GetMapping(value = "/me", produces = "application/json")

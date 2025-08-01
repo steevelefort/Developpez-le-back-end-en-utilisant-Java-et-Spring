@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
 import com.openclassrooms.model.AppUser;
 import com.openclassrooms.repository.AppUserRepository;
@@ -57,6 +58,18 @@ public class AppUserService {
         );
     AppUser savedUser = saveUser(user);
     String token = jwtService.generateToken(savedUser.getEmail(), savedUser.getId());
+    return token;
+  }
+
+
+  public String login(LoginRequest request) throws Exception {
+    String errorMessage = "Email ou mot de passe incorrect";
+    AppUser user = appUserRepository.findByEmail(request.getLogin()).orElseThrow(() -> new Exception(errorMessage));
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+      System.out.println("mot de passe incorrect");
+      throw new Exception(errorMessage);
+    }
+    String token = jwtService.generateToken(user.getEmail(), user.getId());
     return token;
   }
 
