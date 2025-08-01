@@ -10,11 +10,15 @@ import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -42,10 +46,27 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+    http.authorizeHttpRequests(auth -> auth
+        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+        .anyRequest().authenticated()
+        )
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(csrf -> csrf.disable());
 
     return http.build();
+  }
+
+
+  @Bean
+  public JwtDecoder jwtDecoder() {
+    System.out.println("Decoder...");
+    try {
+      RSAPublicKey publicKey = parsePublicKey(jwtPublicKey);
+      return NimbusJwtDecoder.withPublicKey(publicKey).build();
+    } catch (Exception e) {
+      throw new RuntimeException("Error with JWT configuration: " + e.getMessage());
+    }
   }
 
   @Bean

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
+import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.model.AppUser;
 import com.openclassrooms.repository.AppUserRepository;
 
@@ -23,8 +24,10 @@ public class AppUserService {
   @Autowired
   private JwtService jwtService;
 
-  public Optional<AppUser> getUser(final Integer id) {
-    return appUserRepository.findById(id);
+  public AppUserResponse getUser(final Integer id) throws Exception {
+      AppUser user = appUserRepository.findById(id).orElseThrow(() -> new Exception("Utilisateur introuvable"));
+      AppUserResponse response = new AppUserResponse(user);
+      return response;
   }
 
   public Iterable<AppUser> getUsers() {
@@ -54,20 +57,18 @@ public class AppUserService {
     AppUser user = new AppUser(
         request.getName(),
         request.getEmail(),
-        hashedPassword
-        );
+        hashedPassword);
     AppUser savedUser = saveUser(user);
     String token = jwtService.generateToken(savedUser.getEmail(), savedUser.getId());
     return token;
   }
-
 
   public String login(LoginRequest request) throws Exception {
     String errorMessage = "Email ou mot de passe incorrect";
     AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new Exception(errorMessage));
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
       System.out.println("mot de passe incorrect");
-      throw new Exception(errorMessage);
+      throw new RuntimeException(errorMessage);
     }
     String token = jwtService.generateToken(user.getEmail(), user.getId());
     return token;
