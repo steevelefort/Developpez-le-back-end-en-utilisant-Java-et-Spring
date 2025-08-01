@@ -35,7 +35,7 @@ public class AppUserController {
     }
   }
 
-  @PostMapping(value = "/email", produces = "application/json")
+  @PostMapping(value = "/login", produces = "application/json")
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
     try {
       String jwtToken = appUserService.login(request);

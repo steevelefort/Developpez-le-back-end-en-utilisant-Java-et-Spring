@@ -64,7 +64,7 @@ public class AppUserService {
 
   public String login(LoginRequest request) throws Exception {
     String errorMessage = "Email ou mot de passe incorrect";
-    AppUser user = appUserRepository.findByEmail(request.getLogin()).orElseThrow(() -> new Exception(errorMessage));
+    AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new Exception(errorMessage));
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
       System.out.println("mot de passe incorrect");
       throw new Exception(errorMessage);
