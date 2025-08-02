@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import com.openclassrooms.model.AppUser;
+import com.openclassrooms.util.DateUtils;
 
 public class AppUserResponse {
 
@@ -45,13 +46,8 @@ public class AppUserResponse {
     this.id = user.getId();
     this.email = user.getEmail();
     this.name = user.getName();
-    this.created_at = formatDate(user.getCreatedAt());
-    this.updated_at = formatDate(user.getUpdatedAt());
-  }
-
-  private String formatDate(Instant instant) {
-    return instant.atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+    this.created_at = DateUtils.formatDate(user.getCreatedAt());
+    this.updated_at = DateUtils.formatDate(user.getUpdatedAt());
   }
 
   public String getCreated_at() {
