@@ -16,7 +16,6 @@ import com.openclassrooms.service.RentalService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
 public class RentalController {
 
   @Autowired
