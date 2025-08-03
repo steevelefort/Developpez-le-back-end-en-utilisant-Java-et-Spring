@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.dto.response.AppUserResponse;
-import com.openclassrooms.dto.response.ErrorResponse;
+import com.openclassrooms.dto.response.SimpleResponse;
 import com.openclassrooms.service.AppUserService;
 
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class AppUserController {
       AppUserResponse response = appUserService.getUser(id);
       return ResponseEntity.ok(response);
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }
   }
 

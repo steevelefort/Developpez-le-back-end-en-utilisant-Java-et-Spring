@@ -58,6 +58,7 @@ public class AppUserService {
         request.getName(),
         request.getEmail(),
         hashedPassword);
+    // TODO: set createdAt and updatedAt !!!
     AppUser savedUser = saveUser(user);
     String token = jwtService.generateToken(savedUser.getEmail(), savedUser.getId());
     return token;

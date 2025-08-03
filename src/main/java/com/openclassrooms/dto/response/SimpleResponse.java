@@ -3,11 +3,11 @@ package com.openclassrooms.dto.response;
 /**
  * This is a DTO class for error response
  */
-public class ErrorResponse {
+public class SimpleResponse {
 
     private String message;
 
-    public ErrorResponse(String message) {
+    public SimpleResponse(String message) {
       this.message = message;
     }
 

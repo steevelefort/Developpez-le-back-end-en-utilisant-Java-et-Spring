@@ -16,7 +16,7 @@ import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
 import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.dto.response.AuthResponse;
-import com.openclassrooms.dto.response.ErrorResponse;
+import com.openclassrooms.dto.response.SimpleResponse;
 import com.openclassrooms.service.AppUserService;
 
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ public class AuthController {
       String jwtToken = appUserService.register(request);
       return ResponseEntity.ok(new AuthResponse(jwtToken));
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }
   }
 
@@ -45,7 +45,7 @@ public class AuthController {
       System.out.println("Login OK");
       return ResponseEntity.ok(new AuthResponse(jwtToken));
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }
   }
 
@@ -62,7 +62,7 @@ public class AuthController {
       return ResponseEntity.ok(appUserResponse);
     } catch (Exception e) {
       System.out.println("plantage " + e.getMessage());
-      return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }
   }
 
