@@ -52,6 +52,21 @@ Tables are created automatically when the application starts.
 
 Application will be available at: http://localhost:3001
 
+
+### Environment Variables
+
+| Variable Name     | Description                                               | Example                              |
+|-------------------|-----------------------------------------------------------|--------------------------------------|
+| `DB_USERNAME`     | MySQL username                                            | `chatop_user`                        |
+| `DB_PASSWORD`     | MySQL password                                            | `my_secure_password`                 |
+| `DB_HOST`         | JDBC URL to connect to the database                       | `jdbc:mysql://localhost:3306/chatop` |
+| `JWT_PRIVATE_KEY` | Contents of your RSA private key (PEM format, PKCS#8)     | ``cat ./keys/private.pem``           |
+| `JWT_PUBLIC_KEY`  | Contents of your RSA public key (PEM format)              | ``cat ./keys/public.pem``            |
+| `UPLOAD_DIR`      | Server directory where uploaded images will be stored     | `/tmp/uploads`                       |
+| `BASE_URL`        | Base URL used to build image URLs (should match API host) | `http://localhost:3001`              |
+
+
+
 ## API Documentation
 
 Interactive API documentation is available at:

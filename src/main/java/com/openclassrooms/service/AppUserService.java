@@ -70,7 +70,6 @@ public class AppUserService {
     String errorMessage = "Email ou mot de passe incorrect";
     AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new Exception(errorMessage));
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-      System.out.println("mot de passe incorrect");
       throw new RuntimeException(errorMessage);
     }
     String token = jwtService.generateToken(user.getEmail(), user.getId());
