@@ -1,11 +1,9 @@
 package com.openclassrooms.service;
 
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.openclassrooms.dto.request.RentalRequest;
 import com.openclassrooms.dto.request.RentalUpdateRequest;
-import com.openclassrooms.dto.response.RentalResponse;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.repository.RentalRepository;
 
@@ -33,24 +30,37 @@ public class RentalService {
   @Value("${app.base-url}")
   private String baseUrl;
 
-  public RentalResponse getRental(final Integer id) {
+  /**
+   * Return a rental by id if it exists
+   *
+   * @param id the rental id
+   * @return Rental
+   * @throws Exception if not found
+   */
+  public Rental getRental(final Integer id) {
     Rental rental = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Location introuvable"));
-    return new RentalResponse(rental);
+    return rental;
+    // return new RentalResponse(rental);
   }
 
+  /**
+   * Return all existing rentals
+   *
+   * @return Iterable<Rental>
+   */
   public Iterable<Rental> getRentals() {
     return rentalRepository.findAll();
   }
 
-  public void deleteRental(final Integer id) {
-    rentalRepository.deleteById(id);
-  }
-
-  // public Rental saveRental(final Rental rental) {
-  public Rental saveRental(final Rental rental) {
-    return rentalRepository.save(rental);
-  }
-
+  /**
+   * Create a new rental in database
+   *
+   * @param request a DTO object with the rental’s data
+   * @param picture the uploaded rental image
+   * @param userId the current authenticated user id
+   * @return boolean true in case of success
+   * @throws Exception if the picture can’t be saved
+   */
   public boolean createRental(RentalRequest request, MultipartFile picture, Integer userId) throws Exception {
 
     Rental rental = new Rental();
@@ -65,21 +75,23 @@ public class RentalService {
 
     Rental savedRental = rentalRepository.save(rental);
 
-    // String extension = "." +
-    // StringUtils.getFilenameExtension(picture.getOriginalFilename());
-    // Path imagePath = Paths.get(uploadDir, savedRental.getId() + extension);
-    // Files.createDirectories(Paths.get(uploadDir)); // Can throw an IOException
-    // picture.transferTo(imagePath);
     String path = saveImageAndGetPath(savedRental.getId(), picture);
 
-    // savedRental.setPicture(baseUrl + "/images/"+
-    // savedRental.getId().toString()+extension);
     savedRental.setPicture(path);
     rentalRepository.save(savedRental);
 
     return true;
   }
 
+  /**
+   * Update an existing rental in database
+   *
+   * @param request a DTO object with the provided new data
+   * @param userId the ID of current authenticated user
+   * @param rentalId the ID of the target rental
+   * @return boolean if success
+   * @throws Exception if the given rental doesn’t exist
+   */
   public boolean updateRental(RentalUpdateRequest request, Integer userId, Integer rentalId)
       throws Exception {
 
@@ -106,22 +118,19 @@ public class RentalService {
 
     rental.setUpdatedAt(Instant.now());
 
-    // if (!picture.isEmpty()) {
-    //   // Delete the previous picture before saving the new one
-    //   String previousFilename = getFileNameFromUrl(rental.getPicture());
-    //   Path previousImagePath = Paths.get(uploadDir, previousFilename);
-    //   Files.deleteIfExists(previousImagePath);
-    //
-    //   // Upload the new picture
-    //   String path = saveImageAndGetPath(rental.getId(), picture);
-    //   rental.setPicture(path);
-    // }
-
     rentalRepository.save(rental);
 
     return true;
   }
 
+  /**
+   * Save an uploaded image, and return the related url
+   *
+   * @param rentalId the database ID of the associated rental
+   * @param picture the multipart uploaded image
+   * @return String the public url
+   * @throws Exception if the upload target directory can’t be found or write
+   */
   private String saveImageAndGetPath(Integer rentalId, MultipartFile picture) throws Exception {
     String extension = "." + StringUtils.getFilenameExtension(picture.getOriginalFilename());
     Path imagePath = Paths.get(uploadDir, rentalId + extension);
@@ -130,10 +139,4 @@ public class RentalService {
 
     return baseUrl + "/images/" + rentalId + extension;
   }
-
-  // private String getFileNameFromUrl(String url) {
-  //   URI uri = URI.create(url);
-  //   return Paths.get(uri.getPath()).getFileName().toString();
-  // }
-
 }

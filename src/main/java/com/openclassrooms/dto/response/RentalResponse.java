@@ -1,11 +1,13 @@
 package com.openclassrooms.dto.response;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.util.DateUtils;
 
+/**
+ * A DTO class to return a Rental
+ */
 public class RentalResponse extends BaseResponse {
 
   private Integer id;

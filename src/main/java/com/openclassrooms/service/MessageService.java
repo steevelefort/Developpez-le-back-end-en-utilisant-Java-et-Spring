@@ -1,7 +1,6 @@
 package com.openclassrooms.service;
 
 import java.time.Instant;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +18,6 @@ public class MessageService {
 
   @Autowired
   private RentalRepository rentalRepository;
-
-  public Optional<Message> getMessage(final Integer id) {
-    return messageRepository.findById(id);
-  }
-
-  public Iterable<Message> getMessages() {
-    return messageRepository.findAll();
-  }
-
-  public void deleteMessage(final Integer id) {
-    messageRepository.deleteById(id);
-  }
 
   public boolean saveMessage(final MessageRequest request, Integer userId) throws Exception {
 

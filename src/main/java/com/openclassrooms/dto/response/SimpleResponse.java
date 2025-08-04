@@ -1,7 +1,8 @@
 package com.openclassrooms.dto.response;
 
 /**
- * This is a DTO class for error response
+ * This is a DTO class returning only a message
+ * Useful for errors and success message
  */
 public class SimpleResponse extends BaseResponse {
 

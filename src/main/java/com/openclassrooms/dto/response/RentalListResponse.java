@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.openclassrooms.model.Rental;
 
+/**
+ * A DTO class returning a list of Rentals
+ */
 public class RentalListResponse extends BaseResponse {
 
   private List<RentalResponse> rentals;

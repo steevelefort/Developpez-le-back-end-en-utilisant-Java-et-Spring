@@ -1,6 +1,6 @@
 package com.openclassrooms.service;
 
-import java.util.Optional;
+import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
-import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.model.AppUser;
 import com.openclassrooms.repository.AppUserRepository;
 
@@ -24,26 +23,20 @@ public class AppUserService {
   @Autowired
   private JwtService jwtService;
 
-  public AppUserResponse getUser(final Integer id) throws Exception {
+  /**
+   * Get one user by id
+   *
+   * @param id the user id in the database
+   * @return AppUser a user entity
+   * @throws Exception if user not found
+   */
+  public AppUser getUser(final Integer id) throws Exception {
       AppUser user = appUserRepository.findById(id).orElseThrow(() -> new Exception("Utilisateur introuvable"));
-      AppUserResponse response = new AppUserResponse(user);
-      return response;
-  }
-
-  public Iterable<AppUser> getUsers() {
-    return appUserRepository.findAll();
-  }
-
-  public void deleteUser(final Integer id) {
-    appUserRepository.deleteById(id);
-  }
-
-  public AppUser saveUser(final AppUser user) {
-    return appUserRepository.save(user);
+      return user;
   }
 
   /**
-   * Register a user in the database and return à JSON Web Token
+   * Registers a user in the database and returns à JSON Web Token
    *
    * @param request provided user data
    * @return String the generated JSON Web Token
@@ -58,17 +51,25 @@ public class AppUserService {
         request.getName(),
         request.getEmail(),
         hashedPassword);
-    // TODO: set createdAt and updatedAt !!!
-    AppUser savedUser = saveUser(user);
+    user.setCreatedAt(Instant.now());
+    user.setUpdatedAt(Instant.now());
+
+    AppUser savedUser = appUserRepository.save(user);
     String token = jwtService.generateToken(savedUser.getEmail(), savedUser.getId());
     return token;
   }
 
+  /**
+   * Authenticates a user from credentials and returns a JSON Web Token
+   *
+   * @param request a request DTO with credentials
+   * @return String a json web token
+   * @throws Exception if the credentials are wrong.
+   */
   public String login(LoginRequest request) throws Exception {
     String errorMessage = "Email ou mot de passe incorrect";
     AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new Exception(errorMessage));
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-      System.out.println("mot de passe incorrect");
       throw new RuntimeException(errorMessage);
     }
     String token = jwtService.generateToken(user.getEmail(), user.getId());

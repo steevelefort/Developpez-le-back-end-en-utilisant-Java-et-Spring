@@ -10,6 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+/**
+ * A DTO class to collect new Rental data
+ */
 @Schema(description = "Rental creation data")
 public class RentalRequest {
 

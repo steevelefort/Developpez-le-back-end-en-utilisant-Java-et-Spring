@@ -2,6 +2,9 @@ package com.openclassrooms.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * A DTO class for user login
+ */
 public class LoginRequest {
 
   @NotBlank(message = "L’email est obligatoire")
