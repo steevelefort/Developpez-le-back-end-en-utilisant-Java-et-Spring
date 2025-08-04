@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.openclassrooms.dto.request.RentalRequest;
 import com.openclassrooms.dto.request.RentalUpdateRequest;
 import com.openclassrooms.dto.response.SimpleResponse;
+import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.RentalListResponse;
 import com.openclassrooms.dto.response.RentalResponse;
 import com.openclassrooms.model.Rental;
@@ -29,6 +31,13 @@ import com.openclassrooms.service.RentalService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api")
@@ -42,14 +51,19 @@ public class RentalController {
   }
 
   @GetMapping(value = "/rentals", produces = "application/json")
-  public ResponseEntity<?> getRentals() {
+  @Operation(summary = "Get a list of all rentals")
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalListResponse.class)))
+  public ResponseEntity<RentalListResponse> getRentals() {
     Iterable<Rental> rentals = rentalService.getRentals();
     RentalListResponse response = new RentalListResponse(rentals);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping(value = "/rentals/{id}", produces = "application/json")
-  public ResponseEntity<?> getRentalById(@PathVariable Integer id) {
+  @Operation(summary = "Get a rental by id")
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> getRentalById(@PathVariable Integer id) {
     try {
       RentalResponse response = rentalService.getRental(id);
       return ResponseEntity.ok(response);
@@ -59,8 +73,13 @@ public class RentalController {
   }
 
   // Beware of ModelAttribute : the Angular app send a FormData object !
-  @PostMapping(value = "/rentals", produces = "application/json")
-  public ResponseEntity<?> postRental(
+  @PostMapping(value = "/rentals", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json")
+
+  @Operation(summary = "Create a new rental", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(implementation = RentalRequest.class))))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> postRental(
       @Valid @ModelAttribute RentalRequest request,
       @RequestParam("picture") MultipartFile picture,
       @AuthenticationPrincipal Jwt jwt) {
@@ -96,13 +115,15 @@ public class RentalController {
   }
 
   @PutMapping(value = "/rentals/{id}", produces = "application/json")
-  public ResponseEntity<?> putRental(
+  @Operation(summary = "Update a rental")
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> putRental(
       @Valid @ModelAttribute RentalUpdateRequest request,
-      // @RequestParam("picture") MultipartFile picture,
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable Integer id) {
-
-    System.out.println("/rentals/id");
 
     Integer userId = ((Number) jwt.getClaim("userId")).intValue();
 

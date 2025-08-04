@@ -1,6 +1,6 @@
 package com.openclassrooms.dto.response;
 
-public class AuthResponse {
+public class AuthResponse extends BaseResponse {
 
   private String token;
 

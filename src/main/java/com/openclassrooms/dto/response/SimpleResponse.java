@@ -3,7 +3,7 @@ package com.openclassrooms.dto.response;
 /**
  * This is a DTO class for error response
  */
-public class SimpleResponse {
+public class SimpleResponse extends BaseResponse {
 
     private String message;
 

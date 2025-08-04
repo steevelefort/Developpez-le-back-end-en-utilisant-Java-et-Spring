@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.openclassrooms.model.Rental;
 
-public class RentalListResponse {
+public class RentalListResponse extends BaseResponse {
 
   private List<RentalResponse> rentals;
 

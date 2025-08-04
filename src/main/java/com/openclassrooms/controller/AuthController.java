@@ -16,9 +16,15 @@ import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
 import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.dto.response.AuthResponse;
+import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.SimpleResponse;
 import com.openclassrooms.service.AppUserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,7 +35,11 @@ public class AuthController {
   private AppUserService appUserService;
 
   @PostMapping(value = "/register", produces = "application/json")
-  public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+  @Operation(summary = "Register a new user")
+  @SecurityRequirements({})
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> register(@Valid @RequestBody RegisterRequest request) {
     try {
       String jwtToken = appUserService.register(request);
       return ResponseEntity.ok(new AuthResponse(jwtToken));
@@ -39,10 +49,13 @@ public class AuthController {
   }
 
   @PostMapping(value = "/login", produces = "application/json")
-  public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+  @Operation(summary = "Authenticate a registered user")
+  @SecurityRequirements({})
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> login(@Valid @RequestBody LoginRequest request) {
     try {
       String jwtToken = appUserService.login(request);
-      System.out.println("Login OK");
       return ResponseEntity.ok(new AuthResponse(jwtToken));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
@@ -50,18 +63,15 @@ public class AuthController {
   }
 
   @GetMapping(value = "/me", produces = "application/json")
-  public ResponseEntity<?> me(@AuthenticationPrincipal Jwt jwt) {
-    // System.out.println("Me called");
+  @Operation(summary = "Get authenticated user information")
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> me(@AuthenticationPrincipal Jwt jwt) {
     try {
-      // System.out.println("Step 1");
       Integer userId = ((Number) jwt.getClaim("userId")).intValue();
-      // System.out.println("Step 2");
       AppUserResponse appUserResponse = appUserService.getUser(userId);
-      // System.out.println("Step 3");
-      // System.out.println("Me succeed for user "+userId.toString());
       return ResponseEntity.ok(appUserResponse);
     } catch (Exception e) {
-      System.out.println("plantage " + e.getMessage());
       return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }
   }
