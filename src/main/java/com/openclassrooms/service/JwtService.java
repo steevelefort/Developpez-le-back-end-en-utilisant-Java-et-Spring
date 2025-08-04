@@ -3,7 +3,6 @@ package com.openclassrooms.service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import org.hibernate.query.sqm.TemporalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -23,6 +22,13 @@ public class JwtService {
   public JwtService() {
   }
 
+  /**
+   * Generates a JSON Web Token from an email and user id
+   *
+   * @param email an email address
+   * @param id a user id
+   * @return String a json web token
+   */
   public String generateToken(String email, Integer id) {
     Instant now = Instant.now();
 

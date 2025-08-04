@@ -4,6 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * A DTO class for user registration
+ */
 public class RegisterRequest {
   @NotBlank(message = "Veuillez saisir votre email")
   @Email(message = "Veuillez saisir une adresse mail valide")

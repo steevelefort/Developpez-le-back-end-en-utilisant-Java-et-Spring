@@ -1,20 +1,64 @@
-# Développez le back-end en utilisant Java et Spring
+# ChâTop API
 
-Running:
+REST API for ChâTop rental platform.
 
-1. Generate a couple of private/public RSA keys for JWT in the `/keys` folder (create it):
-```sh
-openssl genrsa -out private.pem 2048
-openssl rsa -in private.pem -pubout -out public.pem
+## Database Setup
+
+**Create MySQL database**
+```sql
+CREATE DATABASE chatop;
 ```
 
-2. Run the Spring Boot application with the following environment variables:
-```sh
-DB_USERNAME=xxx DB_PASSWORD=yyy UPLOAD_DIR="/path/to/upload" JWT_PRIVATE_KEY=`cat ./keys/private.pem` JWT_PUBLIC_KEY=`cat ./keys/public.pem` mvn spring-boot:run
-```
+Tables are created automatically when the application starts.
 
-Where xxx is the database username and yyy is the password
-/path/to/upload is the upload directory location
+## Installation and Setup
 
-It is possible to add `BASE_URL=http://...` (http://localhost:3001 by default)
+### Requirements
 
+- Java 17+
+- Maven 3.6+
+- MySQL 8.0+
+
+### Steps
+
+1. **Clone repository**
+   ```bash
+   git clone <repository-url>
+   cd chatop-api
+   ```
+
+2. **Generate JWT keys**
+   ```bash
+   mkdir keys
+   openssl genrsa -out keys/private.pem 2048
+   openssl rsa -in keys/private.pem -pubout -out keys/public.pem
+   ```
+
+3. **Create upload directory**
+   ```bash
+   mkdir /tmp/uploads
+   ```
+
+4. **Run application**
+   ```bash
+   DB_USERNAME=your_mysql_user \
+   DB_PASSWORD=your_mysql_password \
+   DB_HOST=jdbc:mysql://localhost:3306/chatop \
+   UPLOAD_DIR="/tmp/uploads" \
+   JWT_PRIVATE_KEY="`cat ./keys/private.pem`" \
+   JWT_PUBLIC_KEY="`cat ./keys/public.pem`" \
+   mvn spring-boot:run
+   ```
+
+Application will be available at: http://localhost:3001
+
+## API Documentation
+
+Interactive API documentation is available at:
+
+**http://localhost:3001/swagger-ui/index.html**
+
+You can:
+- View all available endpoints
+- Test routes directly from the browser
+- Authenticate with JWT to access protected routes

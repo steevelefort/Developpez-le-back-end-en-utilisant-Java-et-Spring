@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +16,7 @@ import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.dto.response.AuthResponse;
 import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.SimpleResponse;
+import com.openclassrooms.model.AppUser;
 import com.openclassrooms.service.AppUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -69,8 +68,10 @@ public class AuthController {
   public ResponseEntity<BaseResponse> me(@AuthenticationPrincipal Jwt jwt) {
     try {
       Integer userId = ((Number) jwt.getClaim("userId")).intValue();
-      AppUserResponse appUserResponse = appUserService.getUser(userId);
-      return ResponseEntity.ok(appUserResponse);
+
+      AppUser user = appUserService.getUser(userId);
+      AppUserResponse response = new AppUserResponse(user);
+      return ResponseEntity.ok(response);
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
     }

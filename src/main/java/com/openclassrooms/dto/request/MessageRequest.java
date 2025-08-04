@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * A DTO class for received message
+ */
 public class MessageRequest {
     
     public MessageRequest() {

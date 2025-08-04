@@ -1,12 +1,11 @@
 package com.openclassrooms.dto.response;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 import com.openclassrooms.model.AppUser;
 import com.openclassrooms.util.DateUtils;
 
+/**
+ * A DTO object to return a secure AppUser (without password)
+ */
 public class AppUserResponse extends BaseResponse {
 
   private Integer id;
