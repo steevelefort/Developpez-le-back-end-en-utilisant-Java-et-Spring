@@ -10,10 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import com.openclassrooms.dto.request.MessageRequest;
+import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.SimpleResponse;
 import com.openclassrooms.service.MessageService;
 
 import jakarta.validation.Valid;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api")
@@ -27,12 +34,13 @@ public class MessageController {
   }
 
   @PostMapping(value = "/messages", produces = "application/json")
-  public ResponseEntity<?> postMessage(
+  @Operation(summary = "Send a message to a owner")
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public ResponseEntity<BaseResponse> postMessage(
       @Valid @RequestBody MessageRequest request,
       @AuthenticationPrincipal Jwt jwt
       ) {
-
-    System.out.println("Enter the /api/messages route");
 
     Integer userId = ((Number) jwt.getClaim("userId")).intValue();
 
@@ -40,7 +48,6 @@ public class MessageController {
       messageService.saveMessage(request, userId); 
       return ResponseEntity.ok(new SimpleResponse("Message send with success"));
     } catch (Exception e) {
-      System.out.println(e.getMessage());
       return ResponseEntity.badRequest().body(new SimpleResponse("Impossible d’envoyer ce message"));
     }
   }

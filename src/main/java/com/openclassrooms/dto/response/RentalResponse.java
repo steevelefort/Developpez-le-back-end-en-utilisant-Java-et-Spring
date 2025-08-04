@@ -6,7 +6,7 @@ import java.time.Instant;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.util.DateUtils;
 
-public class RentalResponse {
+public class RentalResponse extends BaseResponse {
 
   private Integer id;
   private String name;

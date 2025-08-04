@@ -2,11 +2,15 @@ package com.openclassrooms.dto.request;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "Rental creation data")
 public class RentalRequest {
 
   public RentalRequest() {
@@ -28,6 +32,10 @@ public class RentalRequest {
   @NotBlank(message = "Veuillez saisir une description")
   @Size(max = 2000, message = "La description doit contenir au maximum 2000 caractères")
   private String description;
+
+  @Schema(description = "Rental picture", type = "string", format = "binary")
+  @NotNull(message = "L’image est obligatoire")
+  private MultipartFile picture;
 
   public String getName() {
     return name;
@@ -61,6 +69,11 @@ public class RentalRequest {
     this.description = description;
   }
 
+  public MultipartFile getPicture() {
+    return picture;
+  }
 
-
+  public void setPicture(MultipartFile picture) {
+    this.picture = picture;
+  }
 }

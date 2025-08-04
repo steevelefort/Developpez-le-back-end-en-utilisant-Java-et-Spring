@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import com.openclassrooms.model.AppUser;
 import com.openclassrooms.util.DateUtils;
 
-public class AppUserResponse {
+public class AppUserResponse extends BaseResponse {
 
   private Integer id;
   private String email;
