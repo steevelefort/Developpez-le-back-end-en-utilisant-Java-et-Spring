@@ -21,7 +21,7 @@ public class RegisterRequest {
   private String email;
 
   @NotBlank(message = "Veuillez saisir votre nom")
-  @Size(min = 3, max = 255, message = "Le nom doit contenir entre 3 et 255 caractères")
+  @Size(min = 6, max = 255, message = "Le nom doit contenir entre 6 et 255 caractères")
   private String name;
 
   // Angular front-end validates a minimal 3 characters length. 6 or 8 would be better.

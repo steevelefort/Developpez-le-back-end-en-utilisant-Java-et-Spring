@@ -1,17 +1,10 @@
 package com.openclassrooms.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.model.AppUser;
-import com.openclassrooms.util.DateUtils;
 
 /**
  * Maps User entities and responses

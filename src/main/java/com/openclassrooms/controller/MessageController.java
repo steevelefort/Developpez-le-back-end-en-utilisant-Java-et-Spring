@@ -1,18 +1,14 @@
 package com.openclassrooms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import com.openclassrooms.dto.request.MessageRequest;
-import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.SimpleResponse;
 import com.openclassrooms.service.MessageService;
 
@@ -29,10 +25,6 @@ public class MessageController {
 
   @Autowired
   private MessageService messageService;
-
-  public MessageController() {
-
-  }
 
   @PostMapping(value = "/messages", produces = "application/json")
   @Operation(summary = "Send a message to a owner")

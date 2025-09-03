@@ -29,7 +29,7 @@ public class MessageService {
    * Create a new message in database
    *
    * @param request a DTO object with the message data
-   * @param userId the current authenticated user id
+   * @param userId  the current authenticated user id
    * @return void
    */
   public void saveMessage(final MessageRequest request, Integer userId) {
@@ -46,13 +46,6 @@ public class MessageService {
     }
 
     Message message = messageRequestMapper.toEntity(request);
-
-    // Message message = new Message();
-    // message.setUserId(userId);
-    // message.setRentalId(request.getRentalId());
-    // message.setMessage(request.getMessage());
-    // message.setCreatedAt(Instant.now());
-    // message.setUpdatedAt(Instant.now());
 
     messageRepository.save(message);
   }

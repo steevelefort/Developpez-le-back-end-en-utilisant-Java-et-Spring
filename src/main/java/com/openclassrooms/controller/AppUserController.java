@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.dto.response.AppUserResponse;
-import com.openclassrooms.dto.response.BaseResponse;
-import com.openclassrooms.dto.response.SimpleResponse;
-import com.openclassrooms.model.AppUser;
 import com.openclassrooms.service.AppUserService;
 
 import io.swagger.v3.oas.annotations.Operation;

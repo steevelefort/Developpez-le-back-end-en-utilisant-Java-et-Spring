@@ -1,8 +1,5 @@
 package com.openclassrooms.dto.response;
 
-import com.openclassrooms.model.AppUser;
-import com.openclassrooms.util.DateUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserResponse extends BaseResponse {
+public class AppUserResponse {
 
   private Integer id;
   private String email;

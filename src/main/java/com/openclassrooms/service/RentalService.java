@@ -24,7 +24,6 @@ import com.openclassrooms.mapper.RentalRequestMapper;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.repository.RentalRepository;
 
-import ch.qos.logback.core.rolling.TriggeringPolicy;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service

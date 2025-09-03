@@ -3,7 +3,7 @@ package com.openclassrooms.dto.response;
 /**
  * A DTO simple objet returning the JWT
  */
-public class AuthResponse extends BaseResponse {
+public class AuthResponse {
 
   private String token;
 

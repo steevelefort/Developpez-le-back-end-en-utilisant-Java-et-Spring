@@ -1,13 +1,10 @@
 package com.openclassrooms.controller;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,14 +21,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.openclassrooms.dto.request.RentalRequest;
 import com.openclassrooms.dto.request.RentalUpdateRequest;
 import com.openclassrooms.dto.response.SimpleResponse;
-import com.openclassrooms.mapper.RentalReponseMapper;
-import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.RentalListResponse;
 import com.openclassrooms.dto.response.RentalResponse;
-import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,10 +39,6 @@ public class RentalController {
   @Autowired
   RentalService rentalService;
 
-  public RentalController() {
-
-  }
-
   @GetMapping(value = "/rentals", produces = "application/json")
   @Operation(summary = "Get a list of all rentals")
   @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
@@ -62,8 +51,6 @@ public class RentalController {
   @GetMapping(value = "/rentals/{id}", produces = "application/json")
   @Operation(summary = "Get a rental by id")
   @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
   @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   public RentalResponse getRentalById(@PathVariable Integer id) {
     RentalResponse rentalResponse = rentalService.getRental(id);
@@ -75,10 +62,6 @@ public class RentalController {
   @Operation(summary = "Create a new rental", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(implementation = RentalRequest.class))))
   @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "500", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
   public SimpleResponse postRental(
       @Valid @ModelAttribute RentalRequest request,
       @RequestParam("picture") MultipartFile picture,
@@ -111,12 +94,6 @@ public class RentalController {
   @Operation(summary = "Update a rental")
   @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "403", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "404", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "500", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
   public SimpleResponse putRental(
       @Valid @ModelAttribute RentalUpdateRequest request,
       @AuthenticationPrincipal Jwt jwt,

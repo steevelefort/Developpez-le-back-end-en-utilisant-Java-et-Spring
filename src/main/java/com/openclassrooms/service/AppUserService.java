@@ -82,7 +82,6 @@ public class AppUserService {
    * @throws Exception if the credentials are wrong.
    */
   public AuthResponse login(LoginRequest request) {
-    String errorMessage = "Email ou mot de passe incorrect";
     AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error"));
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error");

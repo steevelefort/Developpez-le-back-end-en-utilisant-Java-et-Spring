@@ -8,7 +8,7 @@
 		<version>3.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.openclassrooms--artifact-id.chatop-api</groupId>
+	<groupId>com.openclassrooms.chatop-api</groupId>
 	<artifactId>chatop-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ChatopAPI</name>
