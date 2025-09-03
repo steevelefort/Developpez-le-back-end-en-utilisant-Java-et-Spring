@@ -2,8 +2,10 @@ package com.openclassrooms.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.openclassrooms.dto.request.RentalRequest;
 import com.openclassrooms.dto.request.RentalUpdateRequest;
 import com.openclassrooms.dto.response.SimpleResponse;
+import com.openclassrooms.mapper.RentalReponseMapper;
 import com.openclassrooms.dto.response.BaseResponse;
 import com.openclassrooms.dto.response.RentalListResponse;
 import com.openclassrooms.dto.response.RentalResponse;
@@ -48,75 +52,71 @@ public class RentalController {
 
   @GetMapping(value = "/rentals", produces = "application/json")
   @Operation(summary = "Get a list of all rentals")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalListResponse.class)))
-  public ResponseEntity<RentalListResponse> getRentals() {
-    Iterable<Rental> rentals = rentalService.getRentals();
-    RentalListResponse response = new RentalListResponse(rentals);
-    return ResponseEntity.ok(response);
+  // @ApiResponse(responseCode = "200", content = @Content(schema =
+  // @Schema(implementation = RentalListResponse.class)))
+  public RentalListResponse getRentals() {
+    RentalListResponse response = rentalService.getRentals();
+    return response;
   }
 
   @GetMapping(value = "/rentals/{id}", produces = "application/json")
   @Operation(summary = "Get a rental by id")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> getRentalById(@PathVariable Integer id) {
-    try {
-      Rental rental = rentalService.getRental(id);
-      RentalResponse response = new RentalResponse(rental);
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+  // @ApiResponse(responseCode = "200", content = @Content(schema =
+  // @Schema(implementation = RentalResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  public RentalResponse getRentalById(@PathVariable Integer id) {
+    RentalResponse rentalResponse = rentalService.getRental(id);
+    return rentalResponse;
   }
 
   // Beware of ModelAttribute : the Angular app send a FormData object !
   @PostMapping(value = "/rentals", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json")
-
   @Operation(summary = "Create a new rental", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(implementation = RentalRequest.class))))
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> postRental(
+  // @ApiResponse(responseCode = "200", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "500", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  public SimpleResponse postRental(
       @Valid @ModelAttribute RentalRequest request,
       @RequestParam("picture") MultipartFile picture,
       @AuthenticationPrincipal Jwt jwt) {
 
     // Check if a file is uploaded
     if (picture.isEmpty()) {
-      return ResponseEntity.badRequest().body(new SimpleResponse("L’image est obligatoire"));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L’image est obligatoire");
     }
 
     // Fix a limit of 2MB for pictures
     if (picture.getSize() > 2 * 1024 * 1024) {
-      return ResponseEntity.badRequest().body(new SimpleResponse("L'image ne doit pas dépasser 2Mo"));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L’image est trop volumineuse (2Mo maximum)");
     }
 
     // Check if the provided file type is allowed
     if (!isAllowedImage(picture)) {
-      return ResponseEntity.badRequest()
-          .body(new SimpleResponse("Veuillez fournir une image valide (.jpg, .jpeg, .png)"));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Veuillez fournir une image valide (.jpg, .jpeg, .png)");
     }
 
     // Get the current authenticated user (owner)
     Integer userId = ((Number) jwt.getClaim("userId")).intValue();
 
-    try {
-      rentalService.createRental(request, picture, userId);
-      return ResponseEntity.ok(new SimpleResponse("Rental created !"));
-    } catch (IOException e) {
-      return ResponseEntity.status(500).body(new SimpleResponse("Erreur lors de la sauvegarde de l'image"));
-    } catch (Exception e) {
-      return ResponseEntity.status(500).body(new SimpleResponse("Erreur lors de l’enregistrement"));
-    }
-
+    rentalService.createRental(request, picture, userId);
+    return new SimpleResponse("Rental created !");
   }
 
   @PutMapping(value = "/rentals/{id}", produces = "application/json")
   @Operation(summary = "Update a rental")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "200", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "403", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "404", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "500", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
   public ResponseEntity<BaseResponse> putRental(
       @Valid @ModelAttribute RentalUpdateRequest request,
       @AuthenticationPrincipal Jwt jwt,

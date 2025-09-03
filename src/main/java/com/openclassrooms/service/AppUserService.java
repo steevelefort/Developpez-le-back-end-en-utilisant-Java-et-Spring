@@ -39,7 +39,7 @@ public class AppUserService {
    * Get one user by id
    *
    * @param id the user id in the database
-   * @return AppUser a user entity
+   * @return AppUserResponse a userResponse entity
    * @throws Exception if user not found
    */
   public AppUserResponse getUser(final Integer id) {
@@ -52,8 +52,8 @@ public class AppUserService {
    * Registers a user in the database and returns à JSON Web Token
    *
    * @param request provided user data
-   * @return String the generated JSON Web Token
-   * @throws Exception if the user email already exist
+   * @return AuthResponse a response with the JWT token 
+   * @throws Exception if the user email already exist or weak password
    */
   public AuthResponse register(RegisterRequest request) {
     if (appUserRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -78,7 +78,7 @@ public class AppUserService {
    * Authenticates a user from credentials and returns a JSON Web Token
    *
    * @param request a request DTO with credentials
-   * @return String a json web token
+   * @return AuthResponse a response with the JWT token 
    * @throws Exception if the credentials are wrong.
    */
   public AuthResponse login(LoginRequest request) {

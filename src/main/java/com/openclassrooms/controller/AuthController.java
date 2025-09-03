@@ -56,7 +56,7 @@ public class AuthController {
   @GetMapping(value = "/me", produces = "application/json")
   @Operation(summary = "Get authenticated user information")
   // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
   public AppUserResponse me(@AuthenticationPrincipal Jwt jwt) {
       Integer userId = ((Number) jwt.getClaim("userId")).intValue();
       AppUserResponse response = appUserService.getUser(userId);
