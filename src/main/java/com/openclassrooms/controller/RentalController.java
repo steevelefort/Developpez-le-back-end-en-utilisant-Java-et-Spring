@@ -117,23 +117,15 @@ public class RentalController {
   // @Schema(implementation = SimpleResponse.class)))
   // @ApiResponse(responseCode = "500", content = @Content(schema =
   // @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> putRental(
+  public SimpleResponse putRental(
       @Valid @ModelAttribute RentalUpdateRequest request,
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable Integer id) {
 
     Integer userId = ((Number) jwt.getClaim("userId")).intValue();
 
-    try {
-      rentalService.updateRental(request, userId, id);
-      return ResponseEntity.ok(new SimpleResponse("Rental updated !"));
-    } catch (SecurityException e) {
-      return ResponseEntity.status(403).build();
-    } catch (EntityNotFoundException e) {
-      return ResponseEntity.status(404).build();
-    } catch (Exception e) {
-      return ResponseEntity.status(500).body(new SimpleResponse("Erreur lors de l’enregistrement"));
-    }
+    rentalService.updateRental(request, userId, id);
+    return new SimpleResponse("Rental updated !");
   }
 
   /**
