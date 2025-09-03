@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.dto.response.AppUserResponse;
-import com.openclassrooms.dto.response.BaseResponse;
-import com.openclassrooms.dto.response.SimpleResponse;
-import com.openclassrooms.model.AppUser;
 import com.openclassrooms.service.AppUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,16 +24,13 @@ public class AppUserController {
 
   @GetMapping(value = "/{id}", produces = "application/json")
   @Operation(summary = "Get a user information")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> user(@PathVariable Integer id) {
-    try {
-      AppUser user = appUserService.getUser(id);
-      AppUserResponse response = new AppUserResponse(user);
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+  @ApiResponse(responseCode = "401", description = "Unauthorized", content=@Content())
+  @ApiResponse(responseCode = "200", content = @Content(schema =
+  @Schema(implementation = AppUserResponse.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request", content=@Content())
+  public AppUserResponse user(@PathVariable Integer id) {
+    AppUserResponse userResponse = appUserService.getUser(id);
+    return userResponse;
   }
 
 }

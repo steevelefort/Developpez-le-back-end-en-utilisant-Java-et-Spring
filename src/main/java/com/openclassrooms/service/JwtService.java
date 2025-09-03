@@ -19,9 +19,6 @@ public class JwtService {
   @Value("${app.jwt.validity}")
   private Integer jwtValidity;
 
-  public JwtService() {
-  }
-
   /**
    * Generates a JSON Web Token from an email and user id
    *
