@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
    * @return error message map
    */
   @ExceptionHandler(NumberFormatException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Map<String, String> handleNumberFormatException(NumberFormatException e) {
     return Map.of("Error", "Format d'id non valide");
   }

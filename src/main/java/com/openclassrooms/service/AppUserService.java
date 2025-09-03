@@ -57,13 +57,13 @@ public class AppUserService {
    */
   public AuthResponse register(RegisterRequest request) {
     if (appUserRepository.findByEmail(request.getEmail()).isPresent()) {
-      throw new IllegalArgumentException("Un utilisateur avec cet email existe déjà");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Un utilisateur avec cet email existe déjà");
     }
 
     // Validation password length - aligned with test data (6 chars) rather than frontend validation (3 chars)
     String password = request.getPassword();
     if (password.length()<6) {
-      throw new IllegalArgumentException("Le mot de passe doit faire au moins 6 caractères");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le mot de passe doit faire au moins 6 caractères");
     }
     
     AppUser user = userRegisterMapper.toEntity(request);

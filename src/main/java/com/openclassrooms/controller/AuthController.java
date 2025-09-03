@@ -1,7 +1,6 @@
 package com.openclassrooms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +13,6 @@ import com.openclassrooms.dto.request.LoginRequest;
 import com.openclassrooms.dto.request.RegisterRequest;
 import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.dto.response.AuthResponse;
-import com.openclassrooms.dto.response.BaseResponse;
-import com.openclassrooms.dto.response.SimpleResponse;
-import com.openclassrooms.model.AppUser;
 import com.openclassrooms.service.AppUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +32,8 @@ public class AuthController {
   @PostMapping(value = "/register", produces = "application/json")
   @Operation(summary = "Register a new user")
   @SecurityRequirements({})
-  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request", content = @Content())
   public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
       AuthResponse response = appUserService.register(request);
       return response; 
@@ -46,8 +42,9 @@ public class AuthController {
   @PostMapping(value = "/login", produces = "application/json")
   @Operation(summary = "Authenticate a registered user")
   @SecurityRequirements({})
-  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request", content = @Content())
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   public AuthResponse login(@Valid @RequestBody LoginRequest request) {
       AuthResponse response = appUserService.login(request);
       return response;
@@ -55,8 +52,8 @@ public class AuthController {
 
   @GetMapping(value = "/me", produces = "application/json")
   @Operation(summary = "Get authenticated user information")
-  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
-  // @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   public AppUserResponse me(@AuthenticationPrincipal Jwt jwt) {
       Integer userId = ((Number) jwt.getClaim("userId")).intValue();
       AppUserResponse response = appUserService.getUser(userId);

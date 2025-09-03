@@ -36,10 +36,8 @@ public class MessageController {
 
   @PostMapping(value = "/messages", produces = "application/json")
   @Operation(summary = "Send a message to a owner")
-  // @ApiResponse(responseCode = "200", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
-  // @ApiResponse(responseCode = "400", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   public SimpleResponse postMessage(
       @Valid @RequestBody MessageRequest request,
       @AuthenticationPrincipal Jwt jwt) {

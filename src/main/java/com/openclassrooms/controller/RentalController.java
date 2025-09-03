@@ -52,8 +52,8 @@ public class RentalController {
 
   @GetMapping(value = "/rentals", produces = "application/json")
   @Operation(summary = "Get a list of all rentals")
-  // @ApiResponse(responseCode = "200", content = @Content(schema =
-  // @Schema(implementation = RentalListResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalListResponse.class)))
   public RentalListResponse getRentals() {
     RentalListResponse response = rentalService.getRentals();
     return response;
@@ -61,10 +61,10 @@ public class RentalController {
 
   @GetMapping(value = "/rentals/{id}", produces = "application/json")
   @Operation(summary = "Get a rental by id")
-  // @ApiResponse(responseCode = "200", content = @Content(schema =
-  // @Schema(implementation = RentalResponse.class)))
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = RentalResponse.class)))
   // @ApiResponse(responseCode = "400", content = @Content(schema =
   // @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
   public RentalResponse getRentalById(@PathVariable Integer id) {
     RentalResponse rentalResponse = rentalService.getRental(id);
     return rentalResponse;
@@ -73,8 +73,8 @@ public class RentalController {
   // Beware of ModelAttribute : the Angular app send a FormData object !
   @PostMapping(value = "/rentals", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json")
   @Operation(summary = "Create a new rental", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE, schema = @Schema(implementation = RentalRequest.class))))
-  // @ApiResponse(responseCode = "200", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
   // @ApiResponse(responseCode = "400", content = @Content(schema =
   // @Schema(implementation = SimpleResponse.class)))
   // @ApiResponse(responseCode = "500", content = @Content(schema =
@@ -109,8 +109,8 @@ public class RentalController {
 
   @PutMapping(value = "/rentals/{id}", produces = "application/json")
   @Operation(summary = "Update a rental")
-  // @ApiResponse(responseCode = "200", content = @Content(schema =
-  // @Schema(implementation = SimpleResponse.class)))
+  @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content())
+  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
   // @ApiResponse(responseCode = "403", content = @Content(schema =
   // @Schema(implementation = SimpleResponse.class)))
   // @ApiResponse(responseCode = "404", content = @Content(schema =
