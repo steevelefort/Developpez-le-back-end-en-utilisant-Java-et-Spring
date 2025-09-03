@@ -36,45 +36,31 @@ public class AuthController {
   @PostMapping(value = "/register", produces = "application/json")
   @Operation(summary = "Register a new user")
   @SecurityRequirements({})
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> register(@Valid @RequestBody RegisterRequest request) {
-    try {
-      String jwtToken = appUserService.register(request);
-      return ResponseEntity.ok(new AuthResponse(jwtToken));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
+      AuthResponse response = appUserService.register(request);
+      return response; 
   }
 
   @PostMapping(value = "/login", produces = "application/json")
   @Operation(summary = "Authenticate a registered user")
   @SecurityRequirements({})
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> login(@Valid @RequestBody LoginRequest request) {
-    try {
-      String jwtToken = appUserService.login(request);
-      return ResponseEntity.ok(new AuthResponse(jwtToken));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AuthResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+      AuthResponse response = appUserService.login(request);
+      return response;
   }
 
   @GetMapping(value = "/me", produces = "application/json")
   @Operation(summary = "Get authenticated user information")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> me(@AuthenticationPrincipal Jwt jwt) {
-    try {
+  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public AppUserResponse me(@AuthenticationPrincipal Jwt jwt) {
       Integer userId = ((Number) jwt.getClaim("userId")).intValue();
-
-      AppUser user = appUserService.getUser(userId);
-      AppUserResponse response = new AppUserResponse(user);
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+      AppUserResponse response = appUserService.getUser(userId);
+      return response;
   }
 
 }

@@ -27,16 +27,11 @@ public class AppUserController {
 
   @GetMapping(value = "/{id}", produces = "application/json")
   @Operation(summary = "Get a user information")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> user(@PathVariable Integer id) {
-    try {
-      AppUser user = appUserService.getUser(id);
-      AppUserResponse response = new AppUserResponse(user);
-      return ResponseEntity.ok(response);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse(e.getMessage()));
-    }
+  // @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AppUserResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
+  public AppUserResponse user(@PathVariable Integer id) {
+      AppUserResponse userResponse = appUserService.getUser(id);
+      return userResponse;
   }
 
 }
