@@ -1,12 +1,14 @@
 package com.openclassrooms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import com.openclassrooms.dto.request.MessageRequest;
@@ -34,22 +36,18 @@ public class MessageController {
 
   @PostMapping(value = "/messages", produces = "application/json")
   @Operation(summary = "Send a message to a owner")
-  @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = SimpleResponse.class)))
-  public ResponseEntity<BaseResponse> postMessage(
+  // @ApiResponse(responseCode = "200", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  // @ApiResponse(responseCode = "400", content = @Content(schema =
+  // @Schema(implementation = SimpleResponse.class)))
+  public SimpleResponse postMessage(
       @Valid @RequestBody MessageRequest request,
-      @AuthenticationPrincipal Jwt jwt
-      ) {
+      @AuthenticationPrincipal Jwt jwt) {
 
     Integer userId = ((Number) jwt.getClaim("userId")).intValue();
 
-    try {
-      messageService.saveMessage(request, userId); 
-      return ResponseEntity.ok(new SimpleResponse("Message send with success"));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new SimpleResponse("Impossible d’envoyer ce message"));
-    }
+    messageService.saveMessage(request, userId);
+    return new SimpleResponse("Message send with success");
   }
-
 
 }
