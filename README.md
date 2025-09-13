@@ -15,8 +15,8 @@ Tables are created automatically when the application starts.
 
 ### Requirements
 
-- Java 17+
-- Maven 3.6+
+- Java 21+
+- Maven 3.9+
 - MySQL 8.0+
 
 ### Steps
