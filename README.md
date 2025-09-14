@@ -18,6 +18,7 @@ Tables are created automatically when the application starts.
 - Java 21+
 - Maven 3.9+
 - MySQL 8.0+
+- **Unix shell** (Linux/macOS) or **GitBash** (Windows)
 
 ### Steps
 
