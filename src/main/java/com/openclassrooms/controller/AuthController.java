@@ -22,6 +22,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
+/**
+ * Controller for user login and register
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

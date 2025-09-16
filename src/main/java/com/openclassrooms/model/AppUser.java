@@ -15,6 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * User entity for app users
+ */
 @Entity
 @Data
 @Table(name = "USERS")

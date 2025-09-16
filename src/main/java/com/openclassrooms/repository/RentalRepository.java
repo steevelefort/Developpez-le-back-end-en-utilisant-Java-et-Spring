@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.openclassrooms.model.Rental;
 
+/**
+ * Repository for rental data access
+ */
 @Repository
 public interface RentalRepository extends CrudRepository<Rental, Integer> {
 

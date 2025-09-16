@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.openclassrooms.model.AppUser;
 
+/**
+ * Repository for user data access
+ */
 @Repository
 public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
 

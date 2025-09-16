@@ -9,6 +9,9 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+/**
+ * Configuration for API documentation
+ */
 @Configuration
 public class SwaggerConfig {
 

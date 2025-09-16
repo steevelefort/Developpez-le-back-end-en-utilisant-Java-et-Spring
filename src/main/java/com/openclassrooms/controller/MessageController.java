@@ -19,6 +19,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * Controller for message operations
+ */
 @RestController
 @RequestMapping("/api")
 public class MessageController {
