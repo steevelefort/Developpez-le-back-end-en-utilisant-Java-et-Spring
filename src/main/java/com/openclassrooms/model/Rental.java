@@ -19,6 +19,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rental entity for property rentals
+ */
 @Entity
 @Table(name = "RENTALS")
 @Data

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.openclassrooms.model.Message;
 
+/**
+ * Repository for message data access
+ */
 @Repository
 public interface MessageRepository extends CrudRepository<Message, Integer> {
 
