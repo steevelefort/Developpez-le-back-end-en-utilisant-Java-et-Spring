@@ -49,7 +49,7 @@ public class RentalService {
    *
    * @param id the rental id
    * @return RentalResponse
-   * @throws Exception if not found
+   * @throws org.springframework.web.server.ResponseStatusException if not found
    */
   public RentalResponse getRental(final Integer id) {
     Rental rental = rentalRepository.findById(id)
@@ -76,7 +76,7 @@ public class RentalService {
    * @param picture the uploaded rental image
    * @param userId  the current authenticated user id
    * @return void
-   * @throws Exception if the picture can’t be saved
+   * @throws org.springframework.web.server.ResponseStatusException if the picture can’t be saved
    */
   @Transactional // Rollback if an exception occurs
   public void createRental(RentalRequest request, MultipartFile picture, Integer userId) {
@@ -102,7 +102,7 @@ public class RentalService {
    * @param userId   the ID of current authenticated user
    * @param rentalId the ID of the target rental
    * @return void
-   * @throws Exception if given data can’t be validated
+   * @throws org.springframework.web.server.ResponseStatusException if unauthorized or data is invalid
    */
   public void updateRental(RentalUpdateRequest request, Integer userId, Integer rentalId) {
 

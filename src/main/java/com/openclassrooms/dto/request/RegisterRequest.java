@@ -26,7 +26,7 @@ public class RegisterRequest {
 
   // Angular front-end validates a minimal 3 characters length. 6 or 8 would be better.
   @NotBlank(message = "Veuillez saisir un mot de passe")
-  @Size(min = 3, max = 255, message = "Le mot de passe doit contenir entre 3 et 255 caractères")
+  @Size(min = 6, max = 255, message = "Le mot de passe doit contenir entre 6 et 255 caractères")
   @ToString.Exclude
   private String password;
 

@@ -136,8 +136,8 @@ public class SecurityConfig {
   /**
    * Get a RSAPrivateKey object from a PEM string
    *
-   * @param pemKey a PEM-formated RSA public key string
-   * @return RSAPublicKey
+   * @param pemKey a PEM-formatted RSA private key string
+   * @return RSAPrivateKey
    * @throws Exception if the PEM key is invalid
    */
   private RSAPrivateKey parsePrivateKey(String pemKey) throws Exception {

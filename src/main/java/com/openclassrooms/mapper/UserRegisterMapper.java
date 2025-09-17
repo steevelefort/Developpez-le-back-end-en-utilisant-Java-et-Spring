@@ -12,10 +12,10 @@ import com.openclassrooms.model.AppUser;
 @Mapper(componentModel = "spring")
 public interface UserRegisterMapper {
   /**
-   * Converts UserRegisterRequest to User entity
+   * Converts RegisterRequest to AppUser entity
    *
-   * @param userRegisterRequest the registration request
-   * @return user entity
+   * @param registerRequest the registration request
+   * @return AppUser entity
    */
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
