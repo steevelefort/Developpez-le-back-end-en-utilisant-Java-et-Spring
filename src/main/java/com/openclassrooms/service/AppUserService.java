@@ -40,7 +40,7 @@ public class AppUserService {
    *
    * @param id the user id in the database
    * @return AppUserResponse a userResponse entity
-   * @throws Exception if user not found
+   * @throws org.springframework.web.server.ResponseStatusException if user not found
    */
   public AppUserResponse getUser(final Integer id) {
       AppUser user = appUserRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "error"));
@@ -53,7 +53,7 @@ public class AppUserService {
    *
    * @param request provided user data
    * @return AuthResponse a response with the JWT token 
-   * @throws Exception if the user email already exist or weak password
+   * @throws org.springframework.web.server.ResponseStatusException if the email already exists or password is too weak
    */
   public AuthResponse register(RegisterRequest request) {
     if (appUserRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -79,7 +79,7 @@ public class AppUserService {
    *
    * @param request a request DTO with credentials
    * @return AuthResponse a response with the JWT token 
-   * @throws Exception if the credentials are wrong.
+   * @throws org.springframework.web.server.ResponseStatusException if the credentials are invalid
    */
   public AuthResponse login(LoginRequest request) {
     AppUser user = appUserRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "error"));

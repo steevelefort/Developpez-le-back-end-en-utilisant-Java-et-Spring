@@ -109,7 +109,7 @@ public class RentalController {
    * Check if the file format is allowed
    *
    * @param picture a multipart uploaded objet
-   * @return boolean true is the file format is allowed
+   * @return true if the file format is allowed
    */
   private boolean isAllowedImage(MultipartFile picture) {
     String pictureContentType = picture.getContentType();

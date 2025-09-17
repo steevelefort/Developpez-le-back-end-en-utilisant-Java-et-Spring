@@ -7,16 +7,16 @@ import com.openclassrooms.dto.response.AppUserResponse;
 import com.openclassrooms.model.AppUser;
 
 /**
- * Maps User entities and responses
+ * Maps AppUser entities and responses
  */
 @Mapper(componentModel = "spring")
 public interface AppUserResponseMapper {
 
   /**
-   * Converts a AppUser entity to AppUserResponse
+   * Converts an AppUser entity to AppUserResponse
    *
-   * @Param appUser the user entity
-   * @Return UserAppResponse dto
+   * @param appUser the user entity
+   * @return AppUserResponse dto
    */
   @Mapping(source = "createdAt", target = "created_at")
   @Mapping(source = "updatedAt", target = "updated_at")
